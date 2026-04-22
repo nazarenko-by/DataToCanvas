@@ -7,15 +7,7 @@ const eslintConfig = defineConfig([
 	...nextVitals,
 	...nextTs,
 	prettier,
-	globalIgnores([
-		".next/**",
-		"out/**",
-		"build/**",
-		"next-env.d.ts",
-		".husky/**",
-		"dist/**",
-		".prettierrc",
-	]),
+	globalIgnores([".next/**", "out/**", "build/**", "next-env.d.ts", ".husky/**", "dist/**", ".prettierrc"]),
 	{
 		rules: {
 			"@typescript-eslint/no-unused-vars": ["error", { argsIgnorePattern: "^_" }],
