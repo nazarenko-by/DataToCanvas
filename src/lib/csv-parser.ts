@@ -7,14 +7,14 @@ export function parseCSV(csvText: string): ParseResult {
 	const regex = /,(?=(?:(?:[^"]*"){2})*[^"]*$)/;
 
 	const lines = csvText.trim().split(/\r?\n/);
-	const headers = lines[0].split(regex).map((h) => h.replace(/^"|"$/g, "").trim());
+	const headers = lines[0].split(regex).map((h) => h.trim().replace(/^[“"‘'«]|[”"’'»]$/g, ""));
 
 	const rows = lines.slice(1).map((line) => {
 		const values = line.split(regex);
 		return headers.reduce(
 			(obj, header, index) => {
 				let val = values[index] ?? "";
-				val = val.replace(/^"|"$/g, "").trim();
+				val = val.trim().replace(/^[“"‘'«]|[”"’'»]$/g, "");
 				obj[header] = val;
 				return obj;
 			},
