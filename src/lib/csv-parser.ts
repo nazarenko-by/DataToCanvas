@@ -4,17 +4,21 @@ export type ParseResult =
     | { success: true; rows: CsvRow[]; headers: string[] }
     | { success: false; error: string }
 
-export function parseCSV(raw: string): ParseResult {
-    if (!raw) return { success: false, error: "Empty string" }
-    const lines = raw.split("\n")
-    const headers = lines[0].split(",")
-    const rows = lines.slice(1).map((line) => {
-        const values = line.split(",")
-        const row: CsvRow = {}
-        for (let i = 0; i < headers.length; i++) {
-            row[headers[i]] = values[i].replaceAll(" ", "")
-        }
-        return row
+export function parseCSV(csvText: string): ParseResult {
+    if (!csvText) return { success: false, error: "Empty string" }
+    const regex = /,(?=(?:(?:[^"]*"){2})*[^"]*$)/;
+
+    const lines = csvText.trim().split(/\r?\n/);
+    const headers = lines[0].split(regex).map(h => h.replace(/^"|"$/g, '').trim());
+
+    const rows = lines.slice(1).map(line => {
+        const values = line.split(regex);
+        return headers.reduce((obj, header, index) => {
+            let val = values[index] ?? "";
+            val = val.replace(/^"|"$/g, '').trim();
+            obj[header] = val;
+            return obj;
+        }, {} as Record<string, string>);
     })
     return { success: true, rows, headers }
 }
