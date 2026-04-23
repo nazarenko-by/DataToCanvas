@@ -15,6 +15,59 @@ describe("parseCSV", () => {
 	it("returns error when given an empty string", () => {
 		const result = parseCSV("");
 		expect(result.success).toBe(false);
+		if (!result.success) {
+			expect(result.error).toBe("Empty string");
+		}
+	});
+
+	it("returns error when given an invalid CSV", () => {
+		const result = parseCSV("invalid");
+		expect(result.success).toBe(false);
+		if (!result.success) {
+			expect(result.error).toBe("Empty data");
+		}
+	});
+
+	it("returns error when given an empty CSV", () => {
+		const result = parseCSV("\n");
+		expect(result.success).toBe(false);
+		if (!result.success) {
+			expect(result.error).toBe("Cannot parse headers");
+		}
+	});
+
+	it("returns error when given empty headers", () => {
+		const result = parseCSV("\n Alice, 30\nBob, 25");
+		expect(result.success).toBe(false);
+		if (!result.success) {
+			expect(result.error).toBe("Cannot parse headers");
+		}
+	});
+
+	it("returns rows when given a CSV only with headers", () => {
+		const result = parseCSV("name,age");
+		expect(result.success).toBe(false);
+		if (!result.success) {
+			expect(result.error).toBe("Empty data");
+		}
+	});
+
+	it("returns error when given an empty CSV rows", () => {
+		const result = parseCSV("name,age\n");
+		expect(result.success).toBe(false);
+		if (!result.success) {
+			expect(result.error).toBe("Empty data");
+		}
+	});
+
+	it("returns headers when given a CSV", () => {
+		const input = "name,age\nAlice,30\nBob,25";
+		const result = parseCSV(input);
+		expect(result.success).toBe(true);
+		if (result.success) {
+			expect(result.headers).toHaveLength(2);
+			expect(result.headers).toEqual(["name", "age"]);
+		}
 	});
 
 	it("returns rows when given a CSV with spaces", () => {
@@ -50,14 +103,25 @@ describe("parseCSV", () => {
 		}
 	});
 
-	it("returns rows when givven a CSV with many rows and empty row", () => {
+	it("returns rows when given a CSV with one column", () => {
+		const input = "name\n Alice\nBob";
+		const result = parseCSV(input);
+		expect(result.success).toBe(true);
+		if (result.success) {
+			expect(result.rows).toHaveLength(2);
+			expect(result.rows[0].name).toBe("Alice");
+			expect(result.rows[1].name).toBe("Bob");
+		}
+	});
+
+	it("returns rows when given a CSV with many rows and empty row", () => {
 		const input = "name, age, height\n Alice , 30, 170\n\nBob , 25, 180";
 		const result = parseCSV(input);
 		expect(result.success).toBe(true);
 		if (result.success) {
-			expect(result.rows).toHaveLength(3);
+			expect(result.rows).toHaveLength(2);
 			expect(result.rows[0].name).toBe("Alice");
-			expect(result.rows[2].name).toBe("Bob");
+			expect(result.rows[1].name).toBe("Bob");
 		}
 	});
 
@@ -70,6 +134,19 @@ describe("parseCSV", () => {
 			expect(result.rows[0].name).toBe("Alice");
 			expect(result.rows[0].age).toBe("");
 			expect(result.rows[1].name).toBe("Bob");
+		}
+	});
+
+	it("returns rows when given a CSV without some cells", () => {
+		const input = "name, age, height\n Alice , , 170\nBob , 25";
+		const result = parseCSV(input);
+		expect(result.success).toBe(true);
+		if (result.success) {
+			expect(result.rows).toHaveLength(2);
+			expect(result.rows[0].name).toBe("Alice");
+			expect(result.rows[0].age).toBe("");
+			expect(result.rows[1].name).toBe("Bob");
+			expect(result.rows[1].height).toBe(null);
 		}
 	});
 });

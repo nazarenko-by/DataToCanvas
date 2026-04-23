@@ -6,20 +6,27 @@ export function parseCSV(csvText: string): ParseResult {
 	if (!csvText) return { success: false, error: "Empty string" };
 	const regex = /,(?=(?:(?:[^"]*"){2})*[^"]*$)/;
 
-	const lines = csvText.trim().split(/\r?\n/);
+	let lines = csvText.split(/\r?\n/);
+	if (lines[0].trim() === "") return { success: false, error: "Cannot parse headers" };
+	lines = lines.filter((line) => line.trim() !== "");
+	if (lines.length < 2) return { success: false, error: "Empty data" };
+
 	const headers = lines[0].split(regex).map((h) => h.trim().replace(/^[“"‘'«]|[”"’'»]$/g, ""));
 
-	const rows = lines.slice(1).map((line) => {
-		const values = line.split(regex);
-		return headers.reduce(
-			(obj, header, index) => {
-				let val = values[index] ?? "";
-				val = val.trim().replace(/^[“"‘'«]|[”"’'»]$/g, "");
-				obj[header] = val;
-				return obj;
-			},
-			{} as Record<string, string>
-		);
-	});
+	const rows = lines
+		.slice(1)
+		.filter((line) => line.trim() !== "")
+		.map((line) => {
+			const values = line.split(regex);
+			return headers.reduce(
+				(obj, header, index) => {
+					let val = values[index] ?? null;
+					if (val) val = val.trim().replace(/^[“"‘'«]|[”"’'»]$/g, "") ?? null;
+					obj[header] = val;
+					return obj;
+				},
+				{} as Record<string, string>
+			);
+		});
 	return { success: true, rows, headers };
 }
