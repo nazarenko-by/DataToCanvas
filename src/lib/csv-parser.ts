@@ -1,4 +1,4 @@
-export type CsvRow = Record<string, string>;
+export type CsvRow = Record<string, string | null>;
 
 export type ParseResult = { success: true; rows: CsvRow[]; headers: string[] } | { success: false; error: string };
 
@@ -13,20 +13,17 @@ export function parseCSV(csvText: string): ParseResult {
 
 	const headers = lines[0].split(regex).map((h) => h.trim().replace(/^[“"‘'«]|[”"’'»]$/g, ""));
 
-	const rows = lines
-		.slice(1)
-		.filter((line) => line.trim() !== "")
-		.map((line) => {
-			const values = line.split(regex);
-			return headers.reduce(
-				(obj, header, index) => {
-					let val = values[index] ?? null;
-					if (val) val = val.trim().replace(/^[“"‘'«]|[”"’'»]$/g, "") ?? null;
-					obj[header] = val;
-					return obj;
-				},
-				{} as Record<string, string>
-			);
-		});
+	const rows = lines.slice(1).map((line) => {
+		const values = line.split(regex);
+		return headers.reduce(
+			(obj, header, index) => {
+				let val = values[index] ?? null;
+				if (val) val = val.trim().replace(/^[“"‘'«]|[”"’'»]$/g, "") ?? null;
+				obj[header] = val;
+				return obj;
+			},
+			{} as Record<string, string | null>
+		);
+	});
 	return { success: true, rows, headers };
 }
