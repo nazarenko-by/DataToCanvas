@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { parseCSV } from "./csv-parser";
+import { parseCSV } from "@/src/lib/csv-parser";
 
 describe("parseCSV", () => {
 	it("returns rows when given a valid CSV", () => {
