@@ -2,7 +2,7 @@
 
 import { useRef, useEffect } from "react";
 import { select, scaleBand, scaleLinear, axisBottom, axisLeft, max } from "d3";
-import { drawBarChart, BarChartData } from "@src/lib/canvas-barchart";
+import { drawBarChart, BarChartData, getBarAtPoints } from "@src/lib/canvas-barchart";
 
 interface Props {
 	data: BarChartData[];
@@ -37,13 +37,13 @@ const BarChart = ({ data, width, height }: Props) => {
 		const yAxis = axisLeft(yScale);
 
 		svgContent
-			.selectAll<SVGGElement, unknown>(".x-axis")
+			.select<SVGGElement>(".x-axis")
 			.attr("transform", `translate(0, ${height - padding.bottom})`)
 			.transition()
 			.duration(750)
 			.call(xAxis);
 		svgContent
-			.selectAll<SVGGElement, unknown>(".y-axis")
+			.select<SVGGElement>(".y-axis")
 			.attr("transform", `translate(${padding.left}, 0)`)
 			.transition()
 			.duration(750)
@@ -56,7 +56,18 @@ const BarChart = ({ data, width, height }: Props) => {
 		canvas.style.height = `${height}px`;
 		ctx.scale(dpr, dpr);
 
-		drawBarChart(ctx, data, { width, height, padding }, { xScale, yScale });
+		drawBarChart({ ctx, data, options: { width, height, padding }, scales: { xScale, yScale } });
+
+		const handleMouseMove = (e: MouseEvent) => {
+			const rect = canvas.getBoundingClientRect();
+			const x = e.clientX - rect.left;
+			const hoveredBar = getBarAtPoints(x, data, xScale);
+			drawBarChart({ ctx, data, options: { width, height, padding }, scales: { xScale, yScale }, hoveredBar });
+		};
+
+		canvas.addEventListener("mousemove", handleMouseMove);
+
+		return () => canvas.removeEventListener("mousemove", handleMouseMove);
 	}, [data, width, height]);
 
 	return (
