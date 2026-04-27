@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef, useEffect } from "react";
-import { select, scaleBand, scaleLinear, axisBottom, axisLeft } from "d3";
+import { select, scaleBand, scaleLinear, axisBottom, axisLeft, max } from "d3";
 import { drawBarChart, BarChartData } from "@src/lib/canvas-barchart";
 
 interface Props {
@@ -10,7 +10,7 @@ interface Props {
 	height: number;
 }
 
-const padding = { top: 20, right: 20, bottom: 20, left: 20 };
+const padding = { top: 20, right: 20, bottom: 30, left: 30 };
 
 const BarChart = ({ data, width, height }: Props) => {
 	const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -26,17 +26,28 @@ const BarChart = ({ data, width, height }: Props) => {
 
 		const xScale = scaleBand()
 			.domain(data.map((d) => d.label))
-			.range([0, width])
+			.range([padding.left, width - padding.right])
 			.padding(0.1);
 
 		const yScale = scaleLinear()
-			.domain([0, Math.max(...data.map((d) => d.value))])
-			.range([height, 0]);
+			.domain([0, max(data, (d) => d.value) ?? 0])
+			.range([height - padding.bottom, padding.top]);
 
 		const xAxis = axisBottom(xScale);
 		const yAxis = axisLeft(yScale);
-		svgContent.append("g").attr("transform", `translate(0, ${height})`).call(xAxis);
-		svgContent.append("g").call(yAxis);
+
+		svgContent
+			.selectAll<SVGGElement, unknown>(".x-axis")
+			.attr("transform", `translate(0, ${height - padding.bottom})`)
+			.transition()
+			.duration(750)
+			.call(xAxis);
+		svgContent
+			.selectAll<SVGGElement, unknown>(".y-axis")
+			.attr("transform", `translate(${padding.left}, 0)`)
+			.transition()
+			.duration(750)
+			.call(yAxis);
 
 		const dpr = window.devicePixelRatio ?? 1;
 		canvas.width = width * dpr;
@@ -49,10 +60,13 @@ const BarChart = ({ data, width, height }: Props) => {
 	}, [data, width, height]);
 
 	return (
-		<div className="bar-chart-container">
-			<canvas ref={canvasRef} />
-			<svg width={width} height={height}>
-				<g ref={svgContentRef} className="svg-content"></g>
+		<div className="bar-chart-container relative">
+			<canvas className="relative z-10" ref={canvasRef} />
+			<svg width={width} height={height} className="absolute top-0">
+				<g ref={svgContentRef} className="svg-content">
+					<g className="x-axis" />
+					<g className="y-axis" />
+				</g>
 			</svg>
 		</div>
 	);

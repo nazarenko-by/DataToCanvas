@@ -13,8 +13,8 @@ const mockCtx = {
 const width = 400;
 const height = 300;
 const padding = { top: 20, right: 20, bottom: 20, left: 20 };
-const xScale = scaleBand();
-const yScale = scaleLinear();
+const xScale = scaleBand().range([padding.left, width - padding.right]);
+const yScale = scaleLinear().range([height - padding.bottom, padding.top]);
 
 const setDomain = (data: BarChartData[], scales: BarChartScales) => {
 	scales.xScale.domain(data.map((d) => d.label));
@@ -31,5 +31,16 @@ describe("drawBarChart", () => {
 		setDomain(data, { xScale, yScale });
 		drawBarChart(mockCtx, data, { width, height, padding }, { xScale, yScale });
 		expect(mockCtx.clearRect).toHaveBeenCalledWith(0, 0, 400, 300);
+	});
+
+	it("call fillRect to draw the bars", () => {
+		const data = [
+			{ label: "A", value: 10 },
+			{ label: "B", value: 20 },
+		];
+		mockCtx.fillRect = vi.fn();
+		setDomain(data, { xScale, yScale });
+		drawBarChart(mockCtx, data, { width, height, padding }, { xScale, yScale });
+		expect(mockCtx.fillRect).toHaveBeenCalledTimes(2);
 	});
 });
