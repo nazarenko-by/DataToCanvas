@@ -4,15 +4,22 @@ import { useRef, useEffect } from "react";
 import { select, scaleBand, scaleLinear, axisBottom, axisLeft, max } from "d3";
 import { drawBarChart, BarChartData, getBarAtPoints } from "@src/lib/canvas-barchart";
 
+interface BarChartPadding {
+	top: number;
+	right: number;
+	bottom: number;
+	left: number;
+}
 interface Props {
 	data: BarChartData[];
 	width: number;
 	height: number;
+	padding?: BarChartPadding;
 }
 
-const padding = { top: 20, right: 20, bottom: 30, left: 30 };
+const PADDING = { top: 20, right: 20, bottom: 30, left: 30 };
 
-const BarChart = ({ data, width, height }: Props) => {
+const BarChart = ({ data, width, height, padding = PADDING }: Props) => {
 	const canvasRef = useRef<HTMLCanvasElement>(null);
 	const svgContentRef = useRef<SVGSVGElement>(null);
 

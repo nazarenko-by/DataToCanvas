@@ -1,8 +1,10 @@
 export type CsvRow = Record<string, string | null>;
 
-export type ParseResult = { success: true; rows: CsvRow[]; headers: string[] } | { success: false; error: string };
+export type ParseResult =
+	| { success: true; rows: CsvRow[]; headers: string[] }
+	| { success: false; error: string; rows?: CsvRow[] };
 
-export function parseCSV(csvText: string): ParseResult {
+export const parseCSV = (csvText: string): ParseResult => {
 	if (!csvText) return { success: false, error: "Empty string" };
 	const regex = /,(?=(?:(?:[^"]*"){2})*[^"]*$)/;
 
@@ -26,4 +28,4 @@ export function parseCSV(csvText: string): ParseResult {
 		);
 	});
 	return { success: true, rows, headers };
-}
+};

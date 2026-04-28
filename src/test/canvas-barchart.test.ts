@@ -73,8 +73,6 @@ describe("drawBarChart", () => {
 			scales: { xScale, yScale },
 			hoveredBar: data[0],
 		});
-		console.log(fillStyles);
-
 		expect(fillStyles[0]).toBe("#e3e3e3");
 		expect(fillStyles[1]).not.toBe("#e3e3e3");
 	});
