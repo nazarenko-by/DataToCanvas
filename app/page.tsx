@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useSyncExternalStore, useMemo, useState } from "react";
 import { FileUpload } from "@src/components/FileUpload";
 import BarChart from "@src/components/BarChart";
 import { BarChartData } from "@src/lib/canvas-barchart";
@@ -13,6 +13,20 @@ export default function Home() {
 	const [yKeys, setYKeys] = useState<string[] | null>(null);
 	const [xActive, setXActive] = useState<string | undefined>();
 	const [yActive, setYActive] = useState<string | undefined>();
+
+	function useTheme() {
+		return useSyncExternalStore(
+			(callback) => {
+				const media = window.matchMedia("(prefers-color-scheme: dark)");
+				media.addEventListener("change", callback);
+				return () => media.removeEventListener("change", callback);
+			},
+			() => (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light"),
+			() => "light"
+		);
+	}
+
+	const themeMode = useTheme();
 
 	const handleParsed = (result: ParseResult) => {
 		if (!result.success) {
@@ -72,7 +86,7 @@ export default function Home() {
 				</select>
 			)}
 			{error && <p>{error}</p>}
-			{chartData && <BarChart data={chartData} width={600} height={400} />}
+			{chartData && <BarChart data={chartData} width={600} height={400} themeMode={themeMode} />}
 		</main>
 	);
 }
