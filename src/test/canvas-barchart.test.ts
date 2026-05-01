@@ -8,6 +8,9 @@ const mockCtx = {
 	fillText: vi.fn(),
 	beginPath: vi.fn(),
 	closePath: vi.fn(),
+	moveTo: vi.fn(),
+	lineTo: vi.fn(),
+	stroke: vi.fn(),
 	save: vi.fn(function (this: typeof mockCtx) {
 		savedFillStyle = this.fillStyle as string;
 	}),

@@ -6,6 +6,8 @@ import BarChart from "@src/components/BarChart";
 import { BarChartData } from "@src/lib/canvas-barchart";
 import { ParseResult } from "@src/lib/csv-parser";
 
+type ThemeMode = "dark" | "light";
+
 export default function Home() {
 	const [fileData, setFileData] = useState<ParseResult | null>(null);
 	const [error, setError] = useState<string | null>(null);
@@ -14,7 +16,7 @@ export default function Home() {
 	const [xActive, setXActive] = useState<string | undefined>();
 	const [yActive, setYActive] = useState<string | undefined>();
 
-	function useTheme() {
+	function useTheme(): ThemeMode {
 		return useSyncExternalStore(
 			(callback) => {
 				const media = window.matchMedia("(prefers-color-scheme: dark)");
@@ -26,7 +28,7 @@ export default function Home() {
 		);
 	}
 
-	const themeMode = useTheme();
+	const themeMode: ThemeMode = useTheme();
 
 	const handleParsed = (result: ParseResult) => {
 		if (!result.success) {
