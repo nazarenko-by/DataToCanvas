@@ -2,7 +2,7 @@
 
 import { useRef, useEffect } from "react";
 import { scaleBand, scaleLinear, max } from "d3";
-import { drawBarChart, BarChartData, getBarAtPoints } from "@src/lib/canvas-barchart";
+import { drawBarChart, BarChartData, getBarAtPoints, exportCanvasToPNG } from "@src/lib/canvas-barchart";
 
 interface BarChartPadding {
 	top: number;
@@ -22,6 +22,8 @@ const PADDING = { top: 20, right: 20, bottom: 30, left: 30 };
 
 const BarChart = ({ data, width, height, padding = PADDING, themeMode = "light" }: Props) => {
 	const canvasRef = useRef<HTMLCanvasElement>(null);
+	const xScaleRef = useRef(scaleBand());
+	const yScaleRef = useRef(scaleLinear());
 
 	useEffect(() => {
 		const canvas = canvasRef.current;
@@ -29,14 +31,12 @@ const BarChart = ({ data, width, height, padding = PADDING, themeMode = "light" 
 		const ctx = canvas.getContext("2d");
 		if (!ctx) return;
 
-		const xScale = scaleBand()
+		xScaleRef.current
 			.domain(data.map((d) => d.label))
 			.range([padding.left, width - padding.right])
 			.padding(0.1);
 
-		const yScale = scaleLinear()
-			.domain([0, max(data, (d) => d.value) ?? 0])
-			.range([height - padding.bottom, padding.top]);
+		yScaleRef.current.domain([0, max(data, (d) => d.value) ?? 0]).range([height - padding.bottom, padding.top]);
 
 		const dpr = window.devicePixelRatio ?? 1;
 		canvas.width = width * dpr;
@@ -45,17 +45,22 @@ const BarChart = ({ data, width, height, padding = PADDING, themeMode = "light" 
 		canvas.style.height = `${height}px`;
 		ctx.scale(dpr, dpr);
 
-		drawBarChart({ ctx, data, options: { width, height, padding, themeMode }, scales: { xScale, yScale } });
+		drawBarChart({
+			ctx,
+			data,
+			options: { width, height, padding, themeMode },
+			scales: { xScale: xScaleRef.current, yScale: yScaleRef.current },
+		});
 
 		const handleMouseMove = (e: MouseEvent) => {
 			const rect = canvas.getBoundingClientRect();
 			const x = e.clientX - rect.left;
-			const hoveredBar = getBarAtPoints(x, data, xScale);
+			const hoveredBar = getBarAtPoints(x, data, xScaleRef.current);
 			drawBarChart({
 				ctx,
 				data,
 				options: { width, height, padding, themeMode },
-				scales: { xScale, yScale },
+				scales: { xScale: xScaleRef.current, yScale: yScaleRef.current },
 				hoveredBar,
 			});
 		};
@@ -65,9 +70,19 @@ const BarChart = ({ data, width, height, padding = PADDING, themeMode = "light" 
 		return () => canvas.removeEventListener("mousemove", handleMouseMove);
 	}, [data, width, height]);
 
+	const handleExport = () => {
+		exportCanvasToPNG({
+			data,
+			options: { width, height, padding, themeMode },
+			scales: { xScale: xScaleRef.current, yScale: yScaleRef.current },
+			exportScale: 1,
+		});
+	};
+
 	return (
 		<div className="bar-chart-container relative">
 			<canvas className="relative z-10" ref={canvasRef} />
+			<button onClick={handleExport}>Export PNG</button>
 		</div>
 	);
 };

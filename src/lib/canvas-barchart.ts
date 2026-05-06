@@ -37,6 +37,14 @@ export interface DrawAxis {
 	options: BarChartOptions;
 }
 
+export interface CanvasToPng {
+	data: BarChartData[];
+	options: BarChartOptions;
+	scales: BarChartScales;
+	exportScale?: number;
+	filename?: string;
+}
+
 export function drawBarChart({ ctx, data, options, scales, hoveredBar }: DrawBarChart): void {
 	if (!data || data.length === 0) return;
 
@@ -137,4 +145,34 @@ export const getBarAtPoints = (x: number, data: BarChartData[], xScale: ScaleBan
 			return x >= barX && x <= barX + barWidth;
 		}) ?? null
 	);
+};
+
+export const exportCanvasToPNG = ({
+	data,
+	options,
+	scales,
+	exportScale = 1,
+	filename = "chart.png",
+}: CanvasToPng): void => {
+	const tempCanvas = document.createElement("canvas");
+	const ctx = tempCanvas.getContext("2d");
+
+	if (!ctx) return;
+
+	const { width, height } = options;
+
+	tempCanvas.width = width * exportScale;
+	tempCanvas.height = height * exportScale;
+	ctx.scale(exportScale, exportScale);
+
+	drawBarChart({ ctx, data, options, scales });
+
+	const url = tempCanvas.toDataURL("image/png");
+	const link = document.createElement("a");
+	link.href = url;
+	link.download = filename;
+	link.click();
+
+	link.remove();
+	tempCanvas.remove();
 };
