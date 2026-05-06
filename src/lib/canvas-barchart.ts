@@ -50,11 +50,9 @@ export function drawBarChart({ ctx, data, options, scales, hoveredBar }: DrawBar
 
 	const { width, height } = options;
 	const { xScale, yScale } = scales;
-	console.log(3, options.themeMode);
-	if (!options.themeMode) {
-		options.themeMode = "light";
-	}
-	const isDarkMode: boolean = options.themeMode === "dark";
+
+	const themeMode = options.themeMode ?? "light";
+	const isDarkMode: boolean = themeMode === "dark";
 
 	ctx.clearRect(0, 0, width, height);
 
@@ -97,8 +95,9 @@ export const drawAxis = ({ ctx, type, scale, options }: DrawAxis) => {
 
 	ctx.save();
 	ctx.beginPath();
-	ctx.strokeStyle = isDarkMode ? "white" : "black";
-	ctx.fillStyle = isDarkMode ? "white" : "black";
+	ctx.strokeStyle = isDarkMode ? "#fff" : "#000";
+	ctx.fillStyle = isDarkMode ? "#fff" : "#000";
+
 	ctx.font = "10px sans-serif";
 
 	if (type === "bottom" || type === "top") {

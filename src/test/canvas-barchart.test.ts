@@ -1,6 +1,6 @@
 import { describe, it, expect, vi } from "vitest";
 import { scaleBand, scaleLinear } from "d3";
-import { drawBarChart, BarChartScales, BarChartData } from "@src/lib/canvas-barchart";
+import { drawBarChart, drawAxis, exportCanvasToPNG, BarChartScales, BarChartData } from "@src/lib/canvas-barchart";
 
 const mockCtx = {
 	clearRect: vi.fn(),
@@ -78,5 +78,88 @@ describe("drawBarChart", () => {
 		});
 		expect(fillStyles[0]).toBe("#e3e3e3");
 		expect(fillStyles[1]).not.toBe("#e3e3e3");
+	});
+});
+
+describe("drawAxis", () => {
+	it("draws axis without throwing", () => {
+		const data = [{ label: "A", value: 10 }];
+		setDomain(data, { xScale, yScale });
+		expect(() =>
+			drawBarChart({ ctx: mockCtx, data, options: { width, height, padding }, scales: { xScale, yScale } })
+		).not.toThrow();
+	});
+
+	it("call drawAxis to draw the axis", () => {
+		const data = [
+			{ label: "A", value: 10 },
+			{ label: "B", value: 20 },
+		];
+		mockCtx.beginPath = vi.fn();
+		setDomain(data, { xScale, yScale });
+		drawAxis({ ctx: mockCtx, type: "bottom", options: { width, height, padding }, scale: xScale });
+		expect(mockCtx.beginPath).toHaveBeenCalledTimes(1);
+	});
+
+	it("should set white colors for dark mode", () => {
+		const scale = scaleBand().domain(["A"]).range([0, 100]);
+		const mockAxis = { ...mockCtx, strokeStyle: "", fillStyle: "", restore: vi.fn() };
+
+		drawAxis({
+			ctx: mockAxis,
+			type: "bottom",
+			scale: scale as any,
+			options: { width, height, padding, themeMode: "dark" },
+		});
+		expect(mockAxis.strokeStyle).toBe("#fff");
+		expect(mockAxis.fillStyle).toBe("#fff");
+	});
+
+	it("should call fillText for each tick", () => {
+		const scale = scaleBand().domain(["A", "B", "C"]).range([0, 300]);
+		mockCtx.fillText = vi.fn();
+		drawAxis({
+			ctx: mockCtx,
+			type: "bottom",
+			scale: scale as any,
+			options: { width, height, padding, themeMode: "light" },
+		});
+		expect(mockCtx.fillText).toHaveBeenCalledTimes(3);
+	});
+});
+
+describe("exportCanvasToPNG", () => {
+	it("should create a temporary canvas and trigger download", () => {
+		const linkMock = { click: vi.fn(), remove: vi.fn(), href: "", download: "" };
+		const canvasMock = {
+			...mockCtx,
+			getContext: vi.fn(() => ({
+				scale: vi.fn(),
+			})),
+			toDataURL: vi.fn(() => "data:image/png;base64,123"),
+			width: 0,
+			height: 0,
+			remove: vi.fn(),
+		};
+
+		vi.spyOn(document, "createElement").mockImplementation((tag) => {
+			if (tag === "canvas") return canvasMock as any;
+			if (tag === "a") return linkMock as any;
+			return {} as any;
+		});
+
+		exportCanvasToPNG({
+			data: [],
+			options: { width: 500, height: 300, padding },
+			scales: {} as any,
+			exportScale: 2,
+			filename: "test-chart.png",
+		});
+
+		expect(canvasMock.width).toBe(1000);
+		expect(linkMock.download).toBe("test-chart.png");
+		expect(linkMock.click).toHaveBeenCalled();
+
+		vi.restoreAllMocks();
 	});
 });
