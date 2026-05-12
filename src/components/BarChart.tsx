@@ -68,7 +68,7 @@ const BarChart = ({ data, width, height, padding = PADDING, themeMode = "light" 
 		canvas.addEventListener("mousemove", handleMouseMove);
 
 		return () => canvas.removeEventListener("mousemove", handleMouseMove);
-	}, [data, width, height]);
+	}, [data, width, height, padding, themeMode]);
 
 	const handleExport = () => {
 		exportCanvasToPNG({

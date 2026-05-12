@@ -108,10 +108,13 @@ export const drawAxis = ({ ctx, type, scale, options }: DrawAxis) => {
 		ctx.moveTo(rangeMin, y);
 		ctx.lineTo(rangeMax, y);
 		ticks.forEach((tick) => {
-			let x = scale(tick as any) ?? 0;
+			let x: number = 0;
 			if (isBandScale) {
+				x = scale(tick as string) ?? 0;
 				const bandWidth = scale.bandwidth();
 				x += bandWidth / 2;
+			} else {
+				x = scale(tick as number) ?? 0;
 			}
 			ctx.moveTo(x, y);
 			ctx.lineTo(x, isBottom ? y + 5 : y - 5);
@@ -125,7 +128,14 @@ export const drawAxis = ({ ctx, type, scale, options }: DrawAxis) => {
 		ctx.moveTo(x, rangeMin);
 		ctx.lineTo(x, rangeMax);
 		ticks.forEach((tick) => {
-			const y = scale(tick as any) ?? 0;
+			let y: number = 0;
+			if (isBandScale) {
+				y = scale(tick as string) ?? 0;
+				const bandWidth = scale.bandwidth();
+				y += bandWidth / 2;
+			} else {
+				y = scale(tick as number) ?? 0;
+			}
 			ctx.moveTo(x, y);
 			ctx.lineTo(isLeft ? x - 5 : x + 5, y);
 			ctx.fillText(tick.toString(), isLeft ? x - 7 : x + 7, y);

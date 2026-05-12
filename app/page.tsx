@@ -58,7 +58,7 @@ export default function Home() {
 			return chartData;
 		}
 		return null;
-	}, [xActive, yActive, fileData?.rows]);
+	}, [xActive, yActive, fileData]);
 
 	return (
 		<main>
