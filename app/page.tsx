@@ -3,7 +3,7 @@
 import { useSyncExternalStore, useMemo, useState } from "react";
 import { FileUpload } from "@src/components/FileUpload";
 import BarChart from "@src/components/BarChart";
-import { BarChartData } from "@src/lib/canvas-barchart";
+import { BarChartData } from "@src/lib/charts/types";
 import { ParseResult } from "@src/lib/csv-parser";
 
 type ThemeMode = "dark" | "light";

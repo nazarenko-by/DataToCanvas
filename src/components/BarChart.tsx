@@ -2,7 +2,10 @@
 
 import { useRef, useEffect } from "react";
 import { scaleBand, scaleLinear, max } from "d3";
-import { drawBarChart, BarChartData, getBarAtPoints, exportCanvasToPNG } from "@src/lib/canvas-barchart";
+
+import { BarChartData } from "@src/lib/charts/types";
+import { drawBarChart, getBarAtPoints } from "@src/lib/charts/bar";
+import { exportCanvasToPNG } from "@src/lib/charts/utils";
 
 interface BarChartPadding {
 	top: number;

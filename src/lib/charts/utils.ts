@@ -1,76 +1,5 @@
-import { ScaleBand, ScaleLinear } from "d3";
-
-export interface BarChartData {
-	label: string;
-	value: number;
-}
-
-export interface BarChartOptions {
-	width: number;
-	height: number;
-	padding: {
-		top: number;
-		right: number;
-		bottom: number;
-		left: number;
-	};
-	themeMode?: "dark" | "light";
-}
-
-export interface BarChartScales {
-	xScale: ScaleBand<string>;
-	yScale: ScaleLinear<number, number>;
-}
-
-export interface DrawBarChart {
-	ctx: CanvasRenderingContext2D;
-	data: BarChartData[];
-	options: BarChartOptions;
-	scales: BarChartScales;
-	hoveredBar?: BarChartData | null;
-}
-
-export interface DrawAxis {
-	ctx: CanvasRenderingContext2D;
-	type: "top" | "right" | "bottom" | "left";
-	scale: ScaleBand<string> | ScaleLinear<number, number>;
-	options: BarChartOptions;
-}
-
-export interface CanvasToPng {
-	data: BarChartData[];
-	options: BarChartOptions;
-	scales: BarChartScales;
-	exportScale?: number;
-	filename?: string;
-}
-
-export function drawBarChart({ ctx, data, options, scales, hoveredBar }: DrawBarChart): void {
-	if (!data || data.length === 0) return;
-
-	const { width, height } = options;
-	const { xScale, yScale } = scales;
-
-	const themeMode = options.themeMode ?? "light";
-	const isDarkMode: boolean = themeMode === "dark";
-
-	ctx.clearRect(0, 0, width, height);
-
-	drawAxis({ ctx, type: "bottom", scale: xScale, options });
-	drawAxis({ ctx, type: "left", scale: yScale, options });
-
-	data.forEach((d) => {
-		const x = xScale(d.label) ?? 0;
-		const y = yScale(d.value);
-		ctx.fillStyle = isDarkMode ? "#fff" : "#000";
-		ctx.save();
-		if (hoveredBar && hoveredBar.label === d.label) {
-			ctx.fillStyle = isDarkMode ? "#333" : "#e3e3e3";
-		}
-		ctx.fillRect(x, y, xScale.bandwidth(), yScale(0) - y);
-		ctx.restore();
-	});
-}
+import { DrawAxis, CanvasToPng } from "@src/lib/charts/types";
+import { drawBarChart } from "@src/lib/charts/bar";
 
 export const drawAxis = ({ ctx, type, scale, options }: DrawAxis) => {
 	const { width, height, padding, themeMode } = options;
@@ -144,16 +73,6 @@ export const drawAxis = ({ ctx, type, scale, options }: DrawAxis) => {
 
 	ctx.stroke();
 	ctx.restore();
-};
-
-export const getBarAtPoints = (x: number, data: BarChartData[], xScale: ScaleBand<string>): BarChartData | null => {
-	return (
-		data.find((d) => {
-			const barX = xScale(d.label) ?? 0;
-			const barWidth = xScale.bandwidth();
-			return x >= barX && x <= barX + barWidth;
-		}) ?? null
-	);
 };
 
 export const exportCanvasToPNG = ({

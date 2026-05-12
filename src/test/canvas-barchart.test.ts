@@ -1,6 +1,8 @@
 import { describe, it, expect, vi } from "vitest";
 import { scaleBand, scaleLinear } from "d3";
-import { drawBarChart, drawAxis, exportCanvasToPNG, BarChartScales, BarChartData } from "@src/lib/canvas-barchart";
+import { BarChartScales, BarChartData } from "@/src/lib/charts/types";
+import { drawBarChart } from "@/src/lib/charts/bar";
+import { drawAxis, exportCanvasToPNG } from "@/src/lib/charts/utils";
 
 const mockCtx = {
 	clearRect: vi.fn(),
