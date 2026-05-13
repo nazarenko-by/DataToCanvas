@@ -1,6 +1,12 @@
 "use client";
 
 import { useSyncExternalStore, useMemo, useState } from "react";
+// import { useRouter } from "next/navigation";
+
+import { useStoreWithEqualityFn } from "zustand/traditional";
+import { shallow } from "zustand/shallow";
+import { useDataStore } from "@src/store/useDataStore";
+
 import { FileUpload } from "@src/components/FileUpload";
 import BarChart from "@src/components/BarChart";
 import { BarChartData } from "@src/lib/charts/types";
@@ -9,12 +15,11 @@ import { ParseResult } from "@src/lib/csv-parser";
 type ThemeMode = "dark" | "light";
 
 export default function Home() {
-	const [fileData, setFileData] = useState<ParseResult | null>(null);
+	const { fileData, setFileData, xKeys, setXKeys, yKeys, setYKeys, xActive, setXActive, yActive, setYActive } =
+		useStoreWithEqualityFn(useDataStore, (state) => ({ ...state }), shallow);
 	const [error, setError] = useState<string | null>(null);
-	const [xKeys, setXKeys] = useState<string[] | null>(null);
-	const [yKeys, setYKeys] = useState<string[] | null>(null);
-	const [xActive, setXActive] = useState<string | undefined>();
-	const [yActive, setYActive] = useState<string | undefined>();
+
+	// const router = useRouter()
 
 	function useTheme(): ThemeMode {
 		return useSyncExternalStore(
@@ -36,8 +41,10 @@ export default function Home() {
 			return;
 		}
 
-		setXActive(undefined);
-		setYActive(undefined);
+		// router.push("/chart");
+
+		setXActive(null);
+		setYActive(null);
 		setFileData(result);
 
 		const keys = result.headers;
