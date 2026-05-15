@@ -110,7 +110,7 @@ describe("drawAxis", () => {
 		drawAxis({
 			ctx: mockAxis,
 			type: "bottom",
-			scale: scale as any,
+			scale,
 			options: { width, height, padding, themeMode: "dark" },
 		});
 		expect(mockAxis.strokeStyle).toBe("#fff");
@@ -123,7 +123,7 @@ describe("drawAxis", () => {
 		drawAxis({
 			ctx: mockCtx,
 			type: "bottom",
-			scale: scale as any,
+			scale,
 			options: { width, height, padding, themeMode: "light" },
 		});
 		expect(mockCtx.fillText).toHaveBeenCalledTimes(3);
@@ -145,15 +145,15 @@ describe("exportCanvasToPNG", () => {
 		};
 
 		vi.spyOn(document, "createElement").mockImplementation((tag) => {
-			if (tag === "canvas") return canvasMock as any;
-			if (tag === "a") return linkMock as any;
+			if (tag === "canvas") return canvasMock;
+			if (tag === "a") return linkMock;
 			return {} as any;
 		});
 
 		exportCanvasToPNG({
 			data: [],
 			options: { width: 500, height: 300, padding },
-			scales: {} as any,
+			scales: {} as BarChartScales,
 			exportScale: 2,
 			filename: "test-chart.png",
 		});
