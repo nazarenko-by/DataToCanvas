@@ -1,6 +1,7 @@
 "use client";
 
 import { useRef, useEffect } from "react";
+import { useTheme } from "next-themes";
 import { scaleBand, scaleLinear, max } from "d3";
 
 import { BarChartData } from "@src/lib/charts/types";
@@ -23,10 +24,12 @@ interface Props {
 
 const PADDING = { top: 20, right: 20, bottom: 30, left: 30 };
 
-const BarChart = ({ data, width, height, padding = PADDING, themeMode = "light" }: Props) => {
+const BarChart = ({ data, width, height, padding = PADDING }: Props) => {
 	const canvasRef = useRef<HTMLCanvasElement>(null);
 	const xScaleRef = useRef(scaleBand());
 	const yScaleRef = useRef(scaleLinear());
+
+	const { resolvedTheme: themeMode } = useTheme();
 
 	useEffect(() => {
 		const canvas = canvasRef.current;

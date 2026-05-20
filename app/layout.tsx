@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { ThemeProvider } from "@/src/assets/theme-provider";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 
@@ -22,11 +23,23 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
 	return (
-		<html lang="en" className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}>
+		<html
+			lang="en"
+			className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+			suppressHydrationWarning
+		>
 			<body className="min-h-full flex flex-col">
-				<FaviconManager />
-				<Header />
-				{children}
+				<ThemeProvider
+					themes={["light", "dark", "cream"]}
+					attribute="class"
+					defaultTheme="system"
+					enableSystem
+					disableTransitionOnChange
+				>
+					<FaviconManager />
+					<Header />
+					{children}
+				</ThemeProvider>
 			</body>
 		</html>
 	);

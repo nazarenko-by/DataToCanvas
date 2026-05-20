@@ -1,6 +1,6 @@
 "use client";
 import { useEffect } from "react";
-import { useThemeStore } from "@src/store/useThemeStore";
+import { useTheme } from "next-themes";
 
 import { THEME_COLORS } from "@src/helper/const";
 
@@ -15,7 +15,7 @@ const getLogoSvg = (color: string, background: string) => `
 `;
 
 export function FaviconManager() {
-	const activeColor = useThemeStore((state) => state.themeMode);
+	const { resolvedTheme: activeColor = "light" } = useTheme();
 
 	useEffect(() => {
 		let link: HTMLLinkElement = document.querySelector("link[rel~='icon']") as HTMLLinkElement;

@@ -1,6 +1,6 @@
 "use client";
 
-import { useSyncExternalStore, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 // import { useRouter } from "next/navigation";
 
 import { useStoreWithEqualityFn } from "zustand/traditional";
@@ -12,29 +12,12 @@ import BarChart from "@src/components/BarChart";
 import { BarChartData } from "@src/lib/charts/types";
 import { ParseResult } from "@src/lib/csv-parser";
 
-type ThemeMode = "dark" | "light";
-
 export default function Home() {
 	const { fileData, setFileData, xKeys, setXKeys, yKeys, setYKeys, xActive, setXActive, yActive, setYActive } =
 		useStoreWithEqualityFn(useDataStore, (state) => ({ ...state }), shallow);
 	const [error, setError] = useState<string | null>(null);
 
 	// const router = useRouter()
-
-	function useTheme(): ThemeMode {
-		return useSyncExternalStore(
-			(callback) => {
-				const media = window.matchMedia("(prefers-color-scheme: dark)");
-				media.addEventListener("change", callback);
-				return () => media.removeEventListener("change", callback);
-			},
-			() => (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light"),
-			() => "light"
-		);
-	}
-
-	const themeMode: ThemeMode = useTheme();
-
 	const handleParsed = (result: ParseResult) => {
 		if (!result.success) {
 			setError(result.error);
@@ -95,7 +78,7 @@ export default function Home() {
 				</select>
 			)}
 			{error && <p>{error}</p>}
-			{chartData && <BarChart data={chartData} width={600} height={400} themeMode={themeMode} />}
+			{chartData && <BarChart data={chartData} width={600} height={400} />}
 		</main>
 	);
 }

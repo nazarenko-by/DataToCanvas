@@ -14,7 +14,7 @@ export interface BarChartOptions {
 		bottom: number;
 		left: number;
 	};
-	themeMode?: "dark" | "light";
+	themeMode?: string;
 }
 
 export interface BarChartScales {

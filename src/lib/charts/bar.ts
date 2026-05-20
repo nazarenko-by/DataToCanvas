@@ -1,6 +1,7 @@
 import { ScaleBand } from "d3";
 import { BarChartData, DrawBarChart } from "@src/lib/charts/types";
 import { drawAxis } from "@src/lib/charts/utils";
+import { THEME_COLORS } from "@/src/helper/const";
 
 export function drawBarChart({ ctx, data, options, scales, hoveredBar }: DrawBarChart): void {
 	if (!data || data.length === 0) return;
@@ -8,8 +9,7 @@ export function drawBarChart({ ctx, data, options, scales, hoveredBar }: DrawBar
 	const { width, height } = options;
 	const { xScale, yScale } = scales;
 
-	const themeMode = options.themeMode ?? "light";
-	const isDarkMode: boolean = themeMode === "dark";
+	const { accent, hover } = THEME_COLORS[options.themeMode || "light"];
 
 	ctx.clearRect(0, 0, width, height);
 
@@ -19,10 +19,10 @@ export function drawBarChart({ ctx, data, options, scales, hoveredBar }: DrawBar
 	data.forEach((d) => {
 		const x = xScale(d.label) ?? 0;
 		const y = yScale(d.value);
-		ctx.fillStyle = isDarkMode ? "#fff" : "#000";
+		ctx.fillStyle = accent;
 		ctx.save();
 		if (hoveredBar && hoveredBar.label === d.label) {
-			ctx.fillStyle = isDarkMode ? "#333" : "#e3e3e3";
+			ctx.fillStyle = hover;
 		}
 		ctx.fillRect(x, y, xScale.bandwidth(), yScale(0) - y);
 		ctx.restore();
