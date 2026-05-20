@@ -3,6 +3,7 @@ import { scaleBand, scaleLinear } from "d3";
 import { BarChartScales, BarChartData } from "@/src/lib/charts/types";
 import { drawBarChart } from "@/src/lib/charts/bar";
 import { drawAxis, exportCanvasToPNG } from "@/src/lib/charts/utils";
+import { THEME_COLORS } from "../helper/const";
 
 const mockCtx = {
 	clearRect: vi.fn(),
@@ -78,8 +79,8 @@ describe("drawBarChart", () => {
 			scales: { xScale, yScale },
 			hoveredBar: data[0],
 		});
-		expect(fillStyles[0]).toBe("#e3e3e3");
-		expect(fillStyles[1]).not.toBe("#e3e3e3");
+		expect(fillStyles[0]).toBe(THEME_COLORS.light.hover);
+		expect(fillStyles[1]).not.toBe(THEME_COLORS.light.hover);
 	});
 });
 
