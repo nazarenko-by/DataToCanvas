@@ -19,3 +19,14 @@ export const THEME_COLORS: { [key: string]: { background: string; accent: string
 		text: "#2c2415",
 	},
 };
+
+export const MENU_ITEMS = [
+	{
+		label: "Home",
+		href: "/",
+	},
+	{
+		label: "About",
+		href: "/about",
+	},
+];
