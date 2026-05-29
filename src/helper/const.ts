@@ -26,6 +26,10 @@ export const MENU_ITEMS = [
 		href: "/",
 	},
 	{
+		label: "Charts",
+		href: "/charts",
+	},
+	{
 		label: "About",
 		href: "/about",
 	},
