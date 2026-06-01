@@ -12,7 +12,7 @@ const Header = () => {
 	return (
 		<header className="w-full flex gap-5 justify-between items-center sticky top-0 z-[9999] p-4 xl:px-8 bg-background/80 backdrop-blur-sm border-b border-surface-3">
 			<div className="logo flex gap-3 items-center">
-				<LogoMark width={32} height={32} className="text-background bg-accent rounded-lg" />
+				<LogoMark width={32} height={32} className="text-surface bg-accent rounded-lg" />
 				<div className="logo-text w-116">Data to Canvas</div>
 			</div>
 			<div className="menu flex gap-5 items-center">
