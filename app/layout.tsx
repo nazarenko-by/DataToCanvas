@@ -5,6 +5,7 @@ import "./globals.css";
 
 import Header from "@/src/components/Header";
 import { FaviconManager } from "@/src/assets/favicon";
+import Footer from "@/src/components/Footer";
 
 const geistSans = Geist({
 	variable: "--font-geist-sans",
@@ -39,6 +40,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
 					<FaviconManager />
 					<Header />
 					{children}
+					<Footer />
 				</ThemeProvider>
 			</body>
 		</html>
