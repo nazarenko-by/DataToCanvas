@@ -1,8 +1,8 @@
 "use client";
 
 import { useTheme } from "next-themes";
-import { clsx } from "clsx";
 
+import { cn } from "@/src/helper";
 import { THEMES } from "@src/helper/const";
 import { ThemesIcons } from "@src/helper/Theme";
 
@@ -16,7 +16,7 @@ const ThemeSwitcher = () => {
 			{THEMES.map((theme) => (
 				<button
 					key={theme}
-					className={clsx("rounded-full hover:text-text-2", { "text-accent": activeTheme === theme })}
+					className={cn("rounded-full hover:text-text-2", { "text-accent": activeTheme === theme })}
 					title={`Switch to ${theme} theme`}
 					onClick={() => themeSwitcher(theme)}
 				>
