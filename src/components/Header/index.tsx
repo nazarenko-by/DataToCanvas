@@ -10,14 +10,14 @@ const ThemeSwitcher = dynamic(() => import("@src/components/Header/ThemeSwitcher
 
 const Header = () => {
 	return (
-		<header className="w-full flex gap-5 justify-between items-center sticky top-0 z-[9999] p-4 xl:px-8 bg-background/80 backdrop-blur-sm border-b border-border text-sm">
-			<div className="logo flex gap-3 items-center">
-				<LogoMark width={26} height={26} className="text-surface bg-accent rounded-lg" />
-				<div className="logo-text w-116">Data to Canvas</div>
+		<header className="w-full flex gap-5 justify-between items-center sticky top-0 z-[9999] p-5 xl:px-10 bg-background/80 backdrop-blur-sm border-b border-border text-sm">
+			<div className="logo flex gap-2.5 items-center">
+				<LogoMark width={26} height={26} className="text-surface bg-accent rounded-md" />
+				<div className="logo-text font-bold text-[16px]">DataToCanvas</div>
 			</div>
 			<div className="menu flex gap-5 items-center text-text-2">
 				{MENU_ITEMS.map((item) => (
-					<a key={item.href} href={item.href} className="hover:text-text">
+					<a key={item.href} href={item.href} className="hover:text-text active:text-accent">
 						{item.label}
 					</a>
 				))}

@@ -5,9 +5,9 @@ type IconProps = SVGProps<SVGSVGElement>;
 // ── Brand mark ──────────────────────────────────────────────────────────────
 const LogoMark = (p: IconProps) => (
 	<svg width={32} height={32} viewBox="0 0 32 32" fill="none" {...p}>
-		<rect x="8" y="16" width="3" height="10" rx="0.6" fill="currentColor" />
-		<rect x="14" y="11" width="3" height="15" rx="0.6" fill="currentColor" opacity="0.8" />
-		<rect x="20" y="6" width="3" height="20" rx="0.6" fill="currentColor" opacity="0.55" />
+		<rect x="8" y="16" width="3" height="6" rx="0.6" fill="currentColor" />
+		<rect x="14" y="12" width="3" height="10" rx="0.6" fill="currentColor" opacity="0.8" />
+		<rect x="20" y="8" width="3" height="14" rx="0.6" fill="currentColor" opacity="0.55" />
 	</svg>
 );
 
