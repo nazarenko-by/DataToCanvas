@@ -1,0 +1,32 @@
+.file-upload .formats span {
+	font-size: 11px;
+	padding: 3px 9px;
+	border-radius: var(--r-pill);
+	background: var(--surface-2);
+	color: var(--text-2);
+	font-family: "Geist Mono", monospace;
+	border: 1px solid var(--border);
+}
+
+.file-upload button {
+	display: inline-flex;
+	align-items: center;
+	gap: 8px;
+	padding: 8px 16px;
+	border-radius: var(--r-md);
+	font: inherit;
+	font-weight: 500;
+	font-size: 14px;
+	cursor: pointer;
+	transition:
+		transform 0.12s,
+		box-shadow 0.15s,
+		filter 0.15s;
+	box-shadow: var(--shadow-sm);
+}
+
+.file-upload button:hover {
+	transform: translateY(-1px);
+	box-shadow: var(--shadow-md);
+	filter: brightness(1.04);
+}

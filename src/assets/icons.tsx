@@ -179,6 +179,23 @@ const IconMail = (p: IconProps) => (
 	</svg>
 );
 
+const IconUpload = (p: IconProps) => (
+	<svg
+		width="24"
+		height="24"
+		viewBox="0 0 24 24"
+		fill="none"
+		stroke="currentColor"
+		strokeWidth="1.8"
+		strokeLinecap="round"
+		strokeLinejoin="round"
+		{...p}
+	>
+		<path d="M12 16V4M7 9l5-5 5 5"></path>
+		<path d="M4 16v2.5A1.5 1.5 0 0 0 5.5 20h13A1.5 1.5 0 0 0 20 18.5V16"></path>
+	</svg>
+);
+
 export {
 	THEMES,
 	LogoMark,
@@ -195,4 +212,5 @@ export {
 	IconGithub,
 	IconInstagram,
 	IconMail,
+	IconUpload,
 };

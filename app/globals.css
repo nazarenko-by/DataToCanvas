@@ -1,7 +1,7 @@
 @import "tailwindcss";
 
 :root {
-	--: #f6f8fb;
+	--background: #f6f8fb;
 	--surface: #ffffff;
 	--surface-2: #eef1f6;
 	--surface-3: #e4e9f1;
@@ -18,8 +18,16 @@
 	--chart-3: #ea580c;
 	--chart-4: #db2777;
 	--chart-5: #2563eb;
+	--accent-soft: color-mix(in oklab, var(--accent) 14%, var(--background));
 	--shadow-sm: 0 1px 2px rgba(10, 14, 20, 0.05);
 	--shadow-md: 0 8px 28px rgba(10, 14, 20, 0.07), 0 1px 2px rgba(10, 14, 20, 0.04);
+	--r-mult: 1;
+	--r-xs: calc(4px * var(--r-mult));
+	--r-sm: calc(6px * var(--r-mult));
+	--r-md: calc(10px * var(--r-mult));
+	--r-lg: calc(14px * var(--r-mult));
+	--r-xl: calc(20px * var(--r-mult));
+	--r-pill: 9999px;
 }
 
 .dark {
@@ -84,6 +92,7 @@
 	--color-chart-3: var(--chart-3);
 	--color-chart-4: var(--chart-4);
 	--color-chart-5: var(--chart-5);
+	--color-accent-soft: var(--accent-soft);
 	--shadow-sm: var(--shadow-sm);
 	--shadow-md: var(--shadow-md);
 	--font-sans: var(--font-geist-sans);
