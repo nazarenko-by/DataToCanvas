@@ -1,3 +1,16 @@
+.file-upload {
+	display: flex;
+	flex-direction: column;
+	gap: calc(var(--spacing) * 4);
+	align-items: center;
+	justify-content: center;
+	width: 100%;
+	max-width: 720px;
+	padding: calc(var(--spacing) * 14) calc(var(--spacing) * 8);
+	border-radius: var(--radius-xl);
+	cursor: pointer;
+}
+
 .file-upload .formats span {
 	font-size: 11px;
 	padding: 3px 9px;

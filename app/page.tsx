@@ -7,7 +7,7 @@ import { useStoreWithEqualityFn } from "zustand/traditional";
 import { shallow } from "zustand/shallow";
 import { useDataStore } from "@src/store/useDataStore";
 
-import { FileUpload } from "@src/components/FileUpload";
+import FileUpload from "@src/components/FileUpload";
 import BarChart from "@src/components/BarChart";
 import { BarChartData } from "@src/lib/charts/types";
 import { ParseResult } from "@src/lib/csv-parser";
