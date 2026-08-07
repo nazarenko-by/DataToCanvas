@@ -100,9 +100,6 @@
 }
 
 @layer components {
-	.border-rounded {
-		@apply border rounded-md;
-	}
 	.btn {
 		@apply items-center font-medium text-sm;
 		@apply px-2 py-2 md:px-4 md:py-2;

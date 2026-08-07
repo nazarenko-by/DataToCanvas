@@ -8,8 +8,6 @@ import { parseCSV, ParseResult } from "@src/lib/csv-parser";
 
 import { IconUpload } from "@src/assets/icons";
 
-import "@src/styles/FileUploader.css";
-
 interface Props {
 	onParsed: (result: ParseResult) => void;
 }
@@ -73,7 +71,11 @@ const FileUpload = ({ onParsed }: Props) => {
 	return (
 		<div
 			className={cn(
-				"text-center file-upload border-dashed border-border-strong border-[1.5px] bg-surface hover:bg-accent-soft hover:border-accent transition-colors duration-200",
+				"flex flex-col items-center justify-center gap-4 w-full max-auto max-w-[720px]",
+				"p-14 px-8 rounded-xl text-center cursor-pointer",
+				"bg-surface border-dashed border-border-strong border-[1.5px]",
+				"transition-[transform_0.12s,box-shadow_0.15s,filter_0.15s] ease-in-out",
+				"hover:bg-accent-soft hover:border-accent",
 				{ "bg-accent-soft border-accent": isDragging }
 			)}
 			onClick={() => inputRef.current?.click()}
@@ -83,22 +85,29 @@ const FileUpload = ({ onParsed }: Props) => {
 			onDrop={handleDrop}
 		>
 			<input ref={inputRef} type="file" accept=".csv" onChange={handleChange} hidden />
-			<div className="icon flex justify-center items-center w-[56px] h-[56px] rounded-xl text-accent bg-accent-soft">
+			<div className="flex justify-center items-center w-14 h-14 rounded-xl text-accent bg-accent-soft">
 				<IconUpload />
 			</div>
-			<h4 className="text-[18px]">Drop your file here, or click to browse</h4>
-			<p className="text-text-2 text-[13px]">Up to 50 MB · Parsed in your browser, never uploaded</p>
-			<div className="formats flex gap-3">
-				{fileFormats.map((format) => (
-					<span key={format}>{format}</span>
-				))}
+			<div className="space-y-1">
+				<h4 className="text-[18px] font-medium text-text">Drop your file here, or click to browse</h4>
+				<p className="text-text-2 text-[13px]">Up to 50 MB · Parsed in your browser, never uploaded</p>
 			</div>
 			<div className="flex gap-3">
+				{fileFormats.map((format) => (
+					<span
+						key={format}
+						className="text-[11px] px-[9px] py-[3px] rounded-full bg-surface-2 text-text-2 font-mono border border-border"
+					>
+						{format}
+					</span>
+				))}
+			</div>
+			<div className="flex gap-3 mt-2">
 				<button className="btn bg-accent text-on-accent" onClick={(e) => onButtonClick(e, "/chart")}>
 					Try the sample dataset
 				</button>
 				<button
-					className="btn text-text border-1 border-border-strong"
+					className="btn text-text border border-border-strong"
 					onClick={(e) => onButtonClick(e, "/about")}
 				>
 					How it works
