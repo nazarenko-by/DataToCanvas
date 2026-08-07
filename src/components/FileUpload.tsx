@@ -2,12 +2,13 @@
 
 import { useRef, useState, MouseEvent, DragEvent, ChangeEvent } from "react";
 import { useRouter } from "next/navigation";
+
+import { cn } from "@src/helper";
 import { parseCSV, ParseResult } from "@src/lib/csv-parser";
 
-import { IconUpload } from "../assets/icons";
+import { IconUpload } from "@src/assets/icons";
 
 import "@src/styles/FileUploader.css";
-import { cn } from "../helper";
 
 interface Props {
 	onParsed: (result: ParseResult) => void;
@@ -72,7 +73,7 @@ const FileUpload = ({ onParsed }: Props) => {
 	return (
 		<div
 			className={cn(
-				"file-upload border-dashed border-border-strong border-[1.5px] bg-surface hover:bg-accent-soft hover:border-accent transition-colors duration-200",
+				"text-center file-upload border-dashed border-border-strong border-[1.5px] bg-surface hover:bg-accent-soft hover:border-accent transition-colors duration-200",
 				{ "bg-accent-soft border-accent": isDragging }
 			)}
 			onClick={() => inputRef.current?.click()}
@@ -93,10 +94,13 @@ const FileUpload = ({ onParsed }: Props) => {
 				))}
 			</div>
 			<div className="flex gap-3">
-				<button className="bg-accent text-on-accent" onClick={(e) => onButtonClick(e, "/chart")}>
+				<button className="btn bg-accent text-on-accent" onClick={(e) => onButtonClick(e, "/chart")}>
 					Try the sample dataset
 				</button>
-				<button className="text-text border-1 border-border-strong" onClick={(e) => onButtonClick(e, "/about")}>
+				<button
+					className="btn text-text border-1 border-border-strong"
+					onClick={(e) => onButtonClick(e, "/about")}
+				>
 					How it works
 				</button>
 			</div>

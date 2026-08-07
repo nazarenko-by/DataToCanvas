@@ -99,6 +99,21 @@
 	--font-mono: var(--font-geist-mono);
 }
 
+@layer components {
+	.border-rounded {
+		@apply border rounded-md;
+	}
+	.btn {
+		@apply items-center font-medium text-sm;
+		@apply px-2 py-2 md:px-4 md:py-2;
+		@apply rounded-xl cursor-pointer shadow-sm;
+		@apply transition-[transform_0.12s,box-shadow_0.15s,filter_0.15s] hover:-translate-y-[1px] hover:shadow-md hover:brightness-[1.04];
+	}
+	.home-container {
+		@apply px-8 pt-16 pb-8 md:px-20 md:pt-22 md:pb-16;
+	}
+}
+
 body {
 	background: var(--background);
 	color: var(--text);

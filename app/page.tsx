@@ -11,6 +11,7 @@ import FileUpload from "@src/components/FileUpload";
 import BarChart from "@src/components/BarChart";
 import { BarChartData } from "@src/lib/charts/types";
 import { ParseResult } from "@src/lib/csv-parser";
+import { cn } from "@/src/helper";
 
 export default function Home() {
 	const { fileData, setFileData, xKeys, setXKeys, yKeys, setYKeys, xActive, setXActive, yActive, setYActive } =
@@ -52,7 +53,13 @@ export default function Home() {
 
 	return (
 		<main>
-			<FileUpload onParsed={handleParsed} />
+			<section
+				className={cn("hero", "home-container", "w-full flex flex-col items-center")}
+				aria-labelledby={"hero"}
+				id="hero"
+			>
+				<FileUpload onParsed={handleParsed} />
+			</section>
 			{xKeys && (
 				<select value={xActive || ""} onChange={(e) => setXActive(e.target.value)}>
 					<option value="" style={{ display: "none" }}>
