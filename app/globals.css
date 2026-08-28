@@ -106,8 +106,11 @@
 		@apply rounded-xl cursor-pointer shadow-sm;
 		@apply transition-[transform_0.12s,box-shadow_0.15s,filter_0.15s] hover:-translate-y-[1px] hover:shadow-md hover:brightness-[1.04];
 	}
+	.container-px {
+		@apply px-8 md:px-20;
+	}
 	.home-container {
-		@apply px-8 pt-16 pb-8 md:px-20 md:pt-22 md:pb-16;
+		@apply pt-16 pb-8 md:pt-22 md:pb-16;
 	}
 }
 

@@ -54,7 +54,7 @@ export default function Home() {
 	return (
 		<main>
 			<section
-				className={cn("hero", "home-container", "w-full flex flex-col items-center")}
+				className={cn("hero", "container-px home-container", "w-full flex flex-col items-center")}
 				aria-labelledby={"hero"}
 				id="hero"
 			>

@@ -7,7 +7,7 @@ const icons = [
 ];
 const Info = () => {
 	return (
-		<div className="flex flex-col gap-4 basis-[28%]">
+		<div className="flex flex-col gap-4 md:basis-[28%]">
 			<div className="flex items-center gap-2">
 				<LogoMark width={26} height={26} className="text-surface bg-accent rounded-md" />
 				<div className="logo-text font-bold text-[16px]">DataToCanvas</div>
