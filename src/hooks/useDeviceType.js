@@ -1,38 +1,38 @@
-"use client"
-import { useEffect, useState } from "react"
+"use client";
+import { useEffect, useState } from "react";
 
 const getDeviceType = () => {
-	const ua = navigator.userAgent.toLowerCase()
+	const ua = navigator.userAgent.toLowerCase();
 
 	if (/mobile|android|iphone|ipad|ipod/i.test(ua)) {
-		return "mobile"
+		return "mobile";
 	} else if (/tablet|ipad/i.test(ua)) {
-		return "tablet"
+		return "tablet";
 	} else {
-		return "desktop"
+		return "desktop";
 	}
-}
+};
 
 const useDeviceType = () => {
-	const [device, setDevice] = useState(() => getDeviceType())
-	const [orientation, setOrientation] = useState("")
+	const [device, setDevice] = useState(() => getDeviceType());
+	const [orientation, setOrientation] = useState("");
 
 	useEffect(() => {
 		const handleResize = () => {
-			setDevice(getDeviceType())
-			setOrientation(screen.orientation?.type || window.screen.orientation?.type || "")
-		}
+			setDevice(getDeviceType());
+			setOrientation(screen.orientation?.type || window.screen.orientation?.type || "");
+		};
 
-		handleResize()
+		handleResize();
 
-		window.addEventListener("resize", handleResize)
+		window.addEventListener("resize", handleResize);
 
 		return () => {
-			window.removeEventListener("resize", handleResize)
-		}
-	}, [])
+			window.removeEventListener("resize", handleResize);
+		};
+	}, []);
 
-	return { device, orientation: orientation?.toLowerCase() }
-}
+	return { device, orientation: orientation?.toLowerCase() };
+};
 
-export default useDeviceType
+export default useDeviceType;
