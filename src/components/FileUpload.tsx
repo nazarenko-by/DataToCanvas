@@ -92,7 +92,7 @@ const FileUpload = ({ onParsed }: Props) => {
 				<h4 className="text-[18px] font-medium text-text">Drop your file here, or click to browse</h4>
 				<p className="text-text-2 text-[13px]">Up to 50 MB · Parsed in your browser, never uploaded</p>
 			</div>
-			<div className="flex gap-3">
+			<div className="flex gap-3 flex-wrap justify-center">
 				{fileFormats.map((format) => (
 					<span
 						key={format}
